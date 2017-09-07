@@ -1,3 +1,4 @@
 pyhon
 
 
+$ export PATH=/c/python36-32:$PATH
