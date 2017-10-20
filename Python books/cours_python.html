@@ -1,0 +1,205 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <title>X-Files</title>
+  <link rel="stylesheet" href="/.theme/css/fancyindex.css">
+  <link rel="stylesheet" href="/.theme/css/StyleCmp.css" />
+  <link rel="stylesheet" href="/.theme/css/jquery-ui.css" />
+  <script type="text/javascript" src="/.theme/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/.theme/jquery-1.12.4.js"></script>
+  <script type="text/javascript" src="/.theme/jquery-ui.js"></script>
+  <meta name="msvalidate.01" content="41D438AEDF84ECB741911F8BB73661A4" />
+
+ <script>
+
+          $(function () {
+          var aff = 0;
+          var x = document.cookie;
+          if (x == 1)
+              aff = 1;
+              if(aff==0){
+                $("#dialog-message").dialog({
+                  // transforme la division en popup
+                  modal: true,
+                  autoOpen: true,
+                  width: 400,
+                  dialogClass: 'dialogstyleperso',
+                  buttons: [
+                      {
+                          text: "OK",
+                          class: 'ui-state-information',
+                          click: function () {
+                              $(this).dialog("close");
+                              $('#popupinformation').remove();
+                          }
+                      },
+                      {
+                          text: "Donate",
+                          class: "ui-state-question",
+                          click: function () {
+                              // affiche la page de l'attribut href
+                              window.location.href = 'https://www.lagout.org/dons.html';
+                              $("#popupconfirmation").remove();
+                          }
+                      }
+                  ]
+                  
+                  });
+                aff = 1;
+                document.cookie = aff;
+              }
+          });
+</script>
+
+
+
+<div id="dialog-message" title="donate" hidden >
+
+    <p>
+
+        
+
+        Les services de Lagout.org ont un certain coût. Pour qu'ils continuent,
+
+        les dons sont les bienvenus. Merci !
+
+    </p>
+
+    <p>
+
+         The services of lagout.org cost some bucks every months. To keep 'em
+
+         alive, donations are very welcome, thanks !
+
+    </p>
+
+</div>
+<script type="text/javascript" src="/.theme/alimcmp.js"></script>
+</head>
+<body>
+
+<html>
+<head><title>Index of /programmation/python/cours_python/</title></head>
+<body bgcolor="white">
+<h1>Index of /programmation/python/cours_python/</h1><hr><pre><a href="../">../</a>
+<a href="python3/">python3/</a>                                           11-Apr-2017 14:52       -
+</pre><hr></body>
+</html>
+
+<footer>
+	               <table border=0>
+
+                    <tr>
+
+                        <td colspan=2 align=center>
+
+                            <FONT size="-1">
+
+                                <div id="cmp"></div>
+
+                            </FONT>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td colspan=2 align="left">
+
+                            <div id="myProgress">
+
+                                <div id="myBar"></div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td colspan=2 align=center>
+
+                            <FONT size="-1">sur 50 € d'objectif</FONT>
+
+                        </td>
+
+                    </tr>
+
+                    <tr></tr>
+
+                    <tr>
+
+                        <td width='60' align=center>
+
+                            <FONT size="-1">
+
+                                <div id="donateur"></div>
+
+                            </FONT>
+
+                        </td>
+
+                        <td width='60' align=center>
+
+                            <FONT size="-1">
+
+                                <div id="nbjourrest"></div>
+
+                            </FONT>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td width='70' align=center>
+
+                            <FONT size="0">donateurs</FONT>
+
+                        </td>
+
+                        <td width='70' align=center>
+
+                            <FONT size="0">jours restants</FONT>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td colspan=2 align=center>
+
+                            <a href="https://www.lagout.org/dons.html">
+
+                                <table>
+
+                                    <tr>
+
+                                        <td bgcolor="#0000FF">
+
+                                            <FONT size="-1">FAIRE UN DON</FONT>
+
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+                <p> <h5> <strong> Please consider a donation in order to help this knowledge to stay online </strong>  
+</footer>
+
+</html>
