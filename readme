@@ -1,5 +1,6 @@
 
+# practicing web scrapping
+
+The Internet contains the most useful set of data ever assembled, largely publicly accessible for free. However, this data is not easily reusable. It is embedded within the structure and style of websites and needs to be carefully extracted to be useful. Web scraping is becoming increasingly useful as a means to easily gather and make sense of the plethora of information available online. Using a simple language like Python, you can crawl the information out of complex websites using simple programming.
 changing python path:
 $ export PATH=/c/python36-32:$PATH
-
-practicing web scrapping
