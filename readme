@@ -1,4 +1,5 @@
-pyhon
 
-
+changing python path:
 $ export PATH=/c/python36-32:$PATH
+
+practicing web scrapping
