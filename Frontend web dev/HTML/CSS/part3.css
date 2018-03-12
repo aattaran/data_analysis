@@ -1,0 +1,24 @@
+h1{
+  font-family: "arial";
+}
+p{
+  font-family: monospace;
+}
+body{
+  font-size: 10px;
+}
+
+#tow{
+  font-size: 2.0em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/*1em=10px
+2em=20px*/
+p{
+  font-style: italic;
+}
+
+h1{
+  text-align: center;
+}
