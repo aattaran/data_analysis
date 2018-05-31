@@ -1,0 +1,37 @@
+why this is a test (waring): hello 
+waring: test1
+
+Waring: test2
+
+Error: hello
+error: test1
+error: test2
+
+info: hello
+Info: test1
+info: test2
+waring: test1
+waring: test1
+
+this is a test (warning)
+this is a test (info)
+this is a test (error)
+
+why this is a test (waring): hello 
+why this is a test (waring): hello 
+this is a test (warning)why this is a test (waring): hello 
+this is a test (warning)
+
+setup syn_vM-2016.12-SP5-1
+
+setup syn_vM-2016.12-SP5-1
+qdc -i -cpu 4 -memory 64000 dc_shell -64
+
+
+setup syn_vM-2016.12-SP5-1
+qdc -i -cpu 4 -memory 64000 pt_shell 
+
+setup pts_vM-2017.06-SP3-1 2:45 PM 
+qdc -i -cpu 4 -memory 64000 pt_shell 2:45 PM 
+setup syn_vM-2016.12-SP5-1 2:45 PM 
+qdc -i -cpu 4 -memory 64000 dc_shell -64 

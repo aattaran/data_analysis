@@ -1,0 +1,114 @@
+Script Inputs
+•	Log file:
+o	File name
+o	File contents
+•	Tool name (Possibly optional)
+•	Tool specific search criteria for various types of messages
+•	# Something like this...
+•	set search_criteria {
+•	    <tool 1 name> {
+•	        info            {regexp1 ...}
+•	        warning         {regexp1 regexp2 regexp3 ...}
+•	        error           {regexp1 regexp2 ...}
+•	        ...
+•	    }
+•	
+•	    <tool 2 name> {
+•	        info            {regexp1 regexp2 ...}
+•	        warning         {regexp1 ...}
+•	        error           {regexp1 regexp2 ...}
+•	        critical        {regexp1 regexp2 regexp3 ...}
+•	        ...
+•	    }
+•	
+•	    ...
+•	}
+•	List of patterns that define a group. Each group could be defined by one or more matching patterns (all messages in the group have the same matching pattern) or ignore pattern (all messages in the group match after the portions of the message that match the ignore pattern are removed).
+•	# Something like this...
+•	set group_patterns {
+•	    <tool 1 name> {
+•	        duplicate {
+•	            match       {.*}
+•	            ignore      {}
+•	        }
+•	
+•	        array {
+•	            match       {}
+•	            ignore      {[0-9](?:[_/ \])])}
+•	        }
+•	
+•	        tool_message    {
+•	            match       {\([A-Z]{3,4}-[0-9]{3}\)(?:\s*)$)}
+•	            ignore      {}
+•	        }
+•	        ...
+•	    }
+•	    ...
+•	}
+}
+•	Common waiver list
+o	Tool specific and message type specific list similar to above
+•	Alternatively, the preceeding lists could be organized as follows:
+•	# Alternative
+•	set tool_config {
+•	    <tool 1 name> {
+•	        search_criteria {
+•	            info            {regexp1 regexp2 ...}
+•	            warning         {regexp1 regexp2 ...}
+•	            ...
+•	        }
+•	
+•	        group_patterns {
+•	            duplicate {
+•	                match       {.*}
+•	                ignore      {}
+•	            }
+•	
+•	            array {
+•	                match       {}
+•	                ignore      {[0-9](?:[_/ \])])}
+•	            }
+•	
+•	            tool_message {
+•	                match       {\([A-Z]{3,4}-[0-9]{3}\)(?:\s*)$)}
+•	                ignore      {}
+•	            }
+•	            ...
+•	        }
+•	
+•	        common_waivers {
+•	            info            {regexp1 regexp2 ...}
+•	            ...
+•	        }
+•	    }
+•	
+•	    <tool 2 name> {
+•	        ...
+•	    }
+•	    ...
+•	
+•	User provided waiver list: similar to above but the user will proved
+•	set waivers {
+•	    info                {regexp1 regexp2 ...}
+•	    warning             {regexp1 regexp2 ...}
+•	    error               {regexp1 ...}
+•	    any                 {...}
+•	}
+Outputs
+Text report with statistics and specifics.
+If time permits, it would be nice to have the message information returned in data structures for further processing (reports, spreadsheets, graphs, etc.) This is pretty open-ended. The following is a suggestion for organization.
+•	A list of all messages: 
+•	lappend all_messages {
+•	    line            <line number>
+•	    type            <info, error, ...>
+•	    text            <raw text>
+•	}
+•	A list for each type of message storing indeces of the $messages list: 
+•	set last_index      [expr {[llength $messages] - 1}]
+•	lappend <info, error, ...>_messages $last_index
+•	A list of all message groups (duplicate messages, messages of a particular type, etc):
+This might be a little difficult to maintain on the fly--certainly not impossible, though. 
+•	lappend message_groups {
+•	    group_type      <duplicate, bus, ...>
+•	    message_list    <list of the indices of messages in group>
+•	}
