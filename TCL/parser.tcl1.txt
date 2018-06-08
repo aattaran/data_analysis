@@ -1,0 +1,197 @@
+#! /usr/bin/tclsh
+
+
+## Defineing proc usage for users ##############################################################################
+    proc usage {} {
+        puts { Wrong argument set.
+
+    ----------------- options -----------------------
+     -i(nput)   :   Input file name to extaraxt matched lines
+     -o(utput)  :   Output file name to store matched lines
+     -p(attern) :   The paterrn to match lines
+     -ig(nore)  :   Ignore already matched lines   
+
+     example:
+            parser.tcl -i input.txt -o output.txt -p "info|warning|erro* .... " -ig "error"
+        }
+    }
+###############################################################################################################
+
+
+## munipulating command line arguments ##########################################################################
+## checking arguments existance
+    if { ![llength $argv]} {
+    usage
+    return
+    }
+
+    ## storing command line arguments in dictionary
+    for {set i 0} {$i < [llength $argv]} { incr i} {
+    dict set  args [lindex $argv $i] [lindex $argv [incr i]]
+    }
+
+    ## checking arguments  
+    if { !([dict exists $args "-i"] && [dict exists $args "-o"] && [dict exists $args "-p"] )} {
+    usage
+    return
+    }
+#########################################################################################################
+
+
+## checking optional arguments and reading ignore file content ##########################################
+    set ignore ""
+    if { [dict exists $args "-ig"] } {
+        set ignores ""
+        set ignoreF [dict get $args "-ig" ]
+          set ignoreFile [open $ignoreF "r"]
+            set ignLine [split [read $ignoreFile] "\n"]
+            foreach line $ignLine {
+                if { $line != "" } {
+                    append ignores $line "|"
+                }
+            }
+        close $ignoreFile
+        regsub -all {\|$} $ignores {} ignore
+
+    }
+    puts "Ignore : $ignore"
+########################################################################################################
+
+
+## reading input file ##################################################################################
+    set inputFile [dict get $args "-i"]
+    set inFile [open $inputFile "r"]
+    set lines [split [read $inFile] "\n"]
+    close $inFile
+########################################################################################################
+
+
+## reading pattern file content #######################################################################
+    set patterns ""
+    set patternF [dict get $args "-p"] 
+    set patternFile [open $patternF "r"]
+        set pattLine [split [read $patternFile] "\n"]
+        foreach line $pattLine {
+            if { $line != "" } {
+                append patterns $line "|"
+            }
+        }
+    close $patternFile
+
+    ## check pattern existence
+    if { $patterns == "" } {
+        usage
+        return
+    }
+
+    regsub -all {\|$} $patterns {} pattern
+    puts "Pattern: $pattern"
+##########################################################################################################
+      
+
+## creating output file and fill matched lines into file ################################################
+    set outputFile [dict get $args "-o"]
+    # filling matched lines to list
+    set lineList ""
+
+    set fileMessage [open "fileMessage.txt" "w"]
+    foreach line $lines {
+        if { [regexp -nocase $pattern $line message] } {
+            if { [regexp {\((\w+\-\d+)\)$} $line match m] } {
+                puts $fileMessage "$message $m"
+                lappend fileMess "$message $m"
+            }
+            lappend lineList $line
+        }
+    }
+    close $fileMessage
+###########################################################################################################
+
+
+### count every repitation of meaasge ######################################################################
+    set flag 1 
+    set count 0
+    foreach line $fileMess {
+        set keyValue [split $line " "]
+        set key [lindex $keyValue 0]
+        set value [lindex $keyValue 1]
+
+        if { $flag == 1 } {
+            set unique $value
+
+        }
+        set flag 0
+        incr count
+        if { $value != $unique} {
+           lappend messUnique "$key $unique $count"
+           set flag 1
+           set count 0
+
+        }
+
+    }
+#############################################################################################################
+
+
+## write in outpot file matched unique lines ###############################################################
+    set unicLineList [lsort -unique $lineList]
+    set outFile [open $outputFile "w"]
+
+    ## Info about matched, dublicated and uniq lines.
+    set unicLines [llength $unicLineList]
+    set totalMatchedLines [llength $lineList]
+    set ignoreLinesCount 0
+    puts "\n***** Parsing Summary *****"
+    puts  "  Total Matched Lines : $totalMatchedLines\n \
+                Dublicated Lines    : [expr $totalMatchedLines - $unicLines]\n \
+                Uniq Lines          : $unicLines"
+
+    foreach line $unicLineList {
+        ## looping none duplicated lines to ignore some pattern and write in file
+        if { $ignore != "" } {
+            ## Check if Argument passeD, ignore passed pattern
+            if { [regexp $ignore $line] } {
+                ## check in the end of line message number
+
+                incr ignoreLinesCount
+                ## check if passed ignore pattern matched, continue foreach to skip line
+                continue
+            }
+        }
+        
+        ## write lines to output file
+        puts $outFile $line    
+    }
+    close $outFile
+
+##############################################################################################################
+   
+    puts "  Ignored lines count : $ignoreLinesCount\n"
+###################### print Name of messages code ##########################################################
+    set pref "/pga/synopsys/pts/M-2017.06-SP3-1/doc/pt/man/catn/"
+    foreach mess $messUnique {
+        set messSplit [split $mess]
+        set codeFile [lindex $messSplit 1]
+        set codeF [split $codeFile "-"]
+        set codeFolder [lindex $codeF 0]
+        append codeFile ".n"
+        set codeF [open "$pref/$codeFolder/$codeFile" r]
+            set content [read $codeF]
+            if { [regexp "NAME(.*)DESCRIPTION" $content a b] } {
+                 lappend summary "$mess \t$b"
+            }
+        close $codeF
+
+    }
+
+##############################################################################################################
+
+
+## print ignored line count and repated messages count ######################################################
+    set summaryFile [open "summary.txt" w]
+    puts $summaryFile "***** Summry of messages code *****"
+    foreach el $summary {
+        puts $summaryFile [string trim $el]
+    }
+    close $summaryFile
+
