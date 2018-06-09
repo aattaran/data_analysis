@@ -1,0 +1,59 @@
+1- put the -p and -ig inside text files and feed it to code. like this:
+script.tcl -i input.txt -o output.txt -p patterns.txt -ig ignore.txt
+patterns.txt is:
+warning| info
+ignore.txt is:
+error| error:
+
+2- in the out.txt, each code has a description which can be found by running "man code". like: man PTE-003
+we want to add the name part of each code in the out.txt
+
+run it as: tclsh8.5 script6.tcl -i dc_shell_01.log -o test.txt -p "warning" -ig "error|info"
+description of the codes can be found by running: "man code" for example: in pt-shell "man ABS-351"
+it should parse the name part and put it in out.txt
+
+another way to do it is to find the code in docs folder
+
+Hi, for example if the error code is PTE-003, it can get the description from PTE-003.n in this folder
+
+/pga/synopsys/pts/M-2017.06-SP3-1/doc/pt/man/catn/PTE
+
+other codes are here:
+
+/pga/synopsys/pts/M-2017.06-SP3-1/doc/pt/man/catn
+
+so based on the name of the error, it should go to that folder and open the .n file and parse it
+
+it need to add another column to out.txt and put the name part there
+
+I rememberd, in pattern.txt and ignore.txt, it can be like:
+
+waning
+
+info
+
+not "warning|info"
+
+so patterns in each line, if that's easier
+
+
+/pga/synopsys/pts/M-2017.06-SP3-1/doc/pt/man/catn/SEL/SEL-101.n
+
+
+
+set filename PTE-001.n
+set f [open $filename]
+set text [regsub -all {.\u0008} [read $f] {}]
+close $f
+
+if ![regexp {NAME\s+(.*?)\s+DESCRIPTION\s+(.*?)\s+W} $text _ name description] {
+    error "Couldn't parse man page file: $filename"
+}
+
+set msg_text [lassign $name msg_code msg_type]
+scan $msg_type {(%[a-zA-Z0-9_\-])} msg_type 
+set description [regsub -all {\s+} $description " "]
+
+foreach var {msg_code msg_type msg_text description} {
+    puts "$var: [set $var]"
+}

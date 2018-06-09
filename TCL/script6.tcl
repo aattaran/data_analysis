@@ -90,7 +90,7 @@ foreach line $unicLineList {
     ## write lines to output file
     puts $outFile $line
 }
-#exec echo "Pattern keyMessage Count" > out.txt
+exec echo "Pattern keyMessage Count" > out.txt
 exec cat fileMessage.txt | sort | uniq -c | awk {{print $2 " " $3 " " $1 }} >> out.txt
 puts  "  Ignored lines count : $ignoreLinesCount\n"
 close $outFile
