@@ -1,0 +1,40 @@
+h1{
+  font-family: 'Permanent Marker';
+  text-align: center;
+
+}
+
+#one{
+  background: #247BA0;
+  height: 200px;
+  padding: 100px;
+  border: 6px solid white;
+}
+
+#two{
+  background: #70C1B3;
+  height: 200px;
+  padding: 100px;
+  border: 6px solid white;
+}
+
+#three{
+  background: #B2DBBF;
+  height: 200px;
+  padding: 100px;
+  border: 6px solid white;
+}
+
+#four{
+  background: #F3FFBD;
+  height: 200px;
+  padding: 100px;
+  border: 6px solid white;
+}
+
+#five{
+  background: #FF1654;
+  height: 200px;
+  padding: 100px;
+  border: 6px solid white;
+}
