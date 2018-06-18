@@ -16,6 +16,19 @@ proc usage {} {
     }
 }
 
+## Breaks the long string into multiple lines
+proc format_str {str} {
+    set begin 50
+    set index [string first { } $str $begin]
+    while {$index!=-1} {
+        set str [string replace $str $index $index "\n\t\t\t\t"]
+        incr begin 100
+        set index [string first { } $str $begin]
+    }
+
+    return $str
+}
+
 ## checking arguments existance
 if { ![llength $argv]} {
     usage
@@ -52,10 +65,16 @@ set pattern [dict get $args "-p"]
 set lineList ""
 
 set fileMessage [open "fileMessage.txt" "w"]
+set message ""
 foreach line $lines {
     if { [regexp -nocase $pattern $line message] } {
         if { [regexp {\(\w+\-\d+\)$} $line match ] } {
              puts $fileMessage "$message $match"
+            if {[info exists codes($match)]} {
+                incr codes($match)
+            } else {
+                set codes($match) 1
+            }
         }
         lappend lineList $line
     }
@@ -90,8 +109,53 @@ foreach line $unicLineList {
     ## write lines to output file
     puts $outFile $line
 }
-exec echo "Pattern keyMessage Count" > out.txt
-exec cat fileMessage.txt | sort | uniq -c | awk {{print $2 " " $3 " " $1 }} >> out.txt
+#exec echo "Pattern keyMessage Count" > out.txt
+#exec cat fileMessage.txt | sort | uniq -c | awk {{print $2 " " $3 " " $1 }} >> out.txt
 puts  "  Ignored lines count : $ignoreLinesCount\n"
 close $outFile
 
+set ofile [open "out.txt" w]
+
+foreach code [array names codes] {
+    set manname "[string trim $code {()}].n"
+
+    set manpath "/pga/synopsys/pts/M-2017.06-SP3-1/doc/pt/man/catn/$manname"
+    if {[string match "PTE*" $manname]} {
+        set manpath "/pga/synopsys/pts/M-2017.06-SP3-1/doc/pt/man/catn/PTE/$manname"
+    }
+
+    set namestr ""
+    if [file exists $manpath] {
+        set manf [open $manpath "r"]
+        set lines [split [read $manf] "\n"]
+        set use 0
+        foreach line $lines {
+            
+            if {[regexp {^NAME} $line]} {
+                set use 1
+                continue
+            }
+            
+            if {$use && [regexp {^[ \t]*$} $line]} {
+                set use 0
+                break
+            }
+            
+            if {$use} {
+                set ws " "
+                if {[string index $namestr end]=="-"} {
+                    set namestr [string trim $namestr "-"]
+                    set ws ""
+                }
+                append namestr "$ws[string trim $line]"
+            }
+        }
+
+        close $manf
+    }
+    puts $ofile "$message\t$code\t$codes($code)\t[format_str $namestr]"
+ #   puts "$message $code $codes($code) $namestr"
+
+}
+
+close $ofile
