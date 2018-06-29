@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>level two</title>
+    <link rel="stylesheet" href="{% static "css/mystyle.css" %}"/>
+
+  </head>
+  <body>
+    <h1>django level two</h1>
+    <h2>there are your access records</h2>
+    <!-- <img src="{% static "Images/d.jpg" %}" alt="Oh Oh "> -->
+
+    <div class="djangotwo">
+      {% if access_records %}
+      <table>
+        <thead>
+          <th>site name</th>
+          <th>date accessed</th>
+        </thead>
+        {% for acc in access_records %}
+        <tr>
+          <td>{{acc.name}}</td>
+          <td>{{acc.date}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>NO Access found!</p>
+      {% endif %}
+
+    </div>
+
+  </body>
+</html>
