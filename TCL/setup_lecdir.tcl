@@ -1,21 +1,7 @@
 #!/usr/bin/tclsh 
 
 ###############################################################################
-##
-## Copyright (c) 2012 SanDisk Corp.   All rights reserved.
-##
-## This media contains an authorized copy or copies of material copyrighted
-## by SanDisk Corporation and its applicable subsidiaries.  This copyright
-## notice and any other copyright notices included in machine readable copies
-## must be reproduced on all authorized copies.  This is confidential and
-## unpublished property of SanDisk Corporation and its applicable subsidiaries.
-##
-##  File Name : setup_lecdir.tcl
-##  Description :
-##  Author :  vramamurthy
-##  Creation Date : 24-04-2014
-##  Last Modified : Wed 05 Oct 2016 03:18:00 PM PDT
-##
+
 ###############################################################################
 #### env variables ####
 set LEC_REV        $env(LEC_REV)       
